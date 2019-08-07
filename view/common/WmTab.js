@@ -18,6 +18,7 @@ class WmTab extends React.Component {
   onTabSelect(tab) {
     if (this.state.tab !== tab) {
       this.setState({ tab: tab });
+      // 给调用的组件回调一个方法
       this.props.callbackParent(tab);
     }
   }
@@ -31,7 +32,7 @@ class WmTab extends React.Component {
     require('../icon/test.png'),
     require('../icon/test.png')];
 
-    const str = ['报志愿', '高考攻略', '我的'];
+    const str = ['首页', '中间', '右边'];
 
     return (
       <View style={styles.container} key={this.state.tab}>

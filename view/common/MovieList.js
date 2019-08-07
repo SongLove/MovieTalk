@@ -14,18 +14,18 @@ import {
   FlatList,
   Image,
   ActivityIndicator,
-  TouchableHighlight
+  TouchableHighlight,
 } from 'react-native';
 
-let REQUEST_URL = 'https://douban-api.now.sh/v2/movie/in_theaters'
+let REQUEST_URL = 'https://douban-api.now.sh/v2/movie/in_theaters';
 class MovieList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       movies: [],
-      loaded: false
-    }
-    this.fetchData()
+      loaded: false,
+    };
+    this.fetchData();
   }
   fetchData() {
     fetch(REQUEST_URL)
@@ -33,30 +33,40 @@ class MovieList extends React.Component {
       .then(responseData => {
         this.setState({
           movies: responseData.subjects,
-          loaded: true
-        })
-      })
+          loaded: true,
+        });
+      });
   }
   // item点击
   TouchOnPress(e) {
-    console.log(e)
+    console.log(e);
   }
   // 电影组件
   renderMovieList({ item, index }) {
-    console.log(item)
+    console.log(item);
     return (
-      <TouchableHighlight underlayColor='rgba(34, 26, 38, 0.1)' onPress={() => { }}>
+      <TouchableHighlight
+        underlayColor="rgba(34, 26, 38, 0.1)"
+        onPress={() => {}}
+      >
         <View key={index} style={styles.movieContent}>
-          <Image style={styles.movieCover} source={{ uri: item.images.large }} />
+          <Image
+            style={styles.movieCover}
+            source={{ uri: item.images.large }}
+          />
           <View style={styles.movieMsg}>
             <Text style={styles.movieTitle}>{item.title}</Text>
             <Text style={styles.movieType}>{item.genres}</Text>
-            <Text style={[styles.movieStars, styles.movieTitle]}>{item.rating.average}</Text>
-            <View style={styles.moviePubdates}><Text>{item.pubdates}</Text></View>
+            <Text style={[styles.movieStars, styles.movieTitle]}>
+              {item.rating.average}
+            </Text>
+            <View style={styles.moviePubdates}>
+              <Text>{item.pubdates}</Text>
+            </View>
           </View>
         </View>
       </TouchableHighlight>
-    )
+    );
   }
   render() {
     if (!this.state.loaded) {
@@ -66,7 +76,7 @@ class MovieList extends React.Component {
             <ActivityIndicator size="large" color="#6435c9" />
           </View>
         </View>
-      )
+      );
     }
     return (
       // <View style={styles.container}>
@@ -109,7 +119,7 @@ class MovieList extends React.Component {
           renderItem={this.renderMovieList}
         />
       </View>
-    )
+    );
   }
 }
 
@@ -117,19 +127,19 @@ const styles = StyleSheet.create({
   movieTitle: {
     fontWeight: '300',
     fontFamily: 'Helvetica Neue',
-    fontSize: 18
+    fontSize: 18,
   },
   movieStars: {
-    color: '#db2828'
+    color: '#db2828',
   },
   movieMsg: {
     flex: 1,
     alignItems: 'flex-start',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   moviePubdates: {
     height: 55,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   movieContent: {
     flexDirection: 'row',
@@ -142,12 +152,12 @@ const styles = StyleSheet.create({
   movieCover: {
     width: 100,
     height: 140,
-    marginRight: 15
+    marginRight: 15,
   },
   loading: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   overlay: {
     backgroundColor: 'rgba(0,0,255,0.3)',
@@ -157,11 +167,11 @@ const styles = StyleSheet.create({
     fontSize: 33,
     fontWeight: '300',
     color: '#fff',
-    padding: 10
+    padding: 10,
   },
   backgroundImage: {
     flex: 1,
-    resizeMode: 'cover'
+    resizeMode: 'cover',
   },
   image: {
     width: 99,
@@ -172,7 +182,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#6435c9',
     margin: 6,
-    borderRadius: 5
+    borderRadius: 5,
   },
   itemOne: {},
   itemTwo: {},
@@ -181,7 +191,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'Helvetica Neue',
     color: '#6432c9',
-    padding: 30
+    padding: 30,
   },
   title: {
     fontSize: 26,
@@ -189,14 +199,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontStyle: 'italic',
     letterSpacing: 2,
-    lineHeight: 33
+    lineHeight: 33,
   },
   container: {
     backgroundColor: '#eae7ff',
     flex: 1,
-    padding: 10
-  }
-})
-
+    padding: 10,
+  },
+});
 
 export default MovieList;

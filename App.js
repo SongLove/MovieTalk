@@ -7,35 +7,31 @@
  */
 
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TabBarAndroid,
-  Dimensions
-} from 'react-native';
-const { width, height } = Dimensions.get('window');
+import { View, StyleSheet, Dimensions } from 'react-native';
+const { width } = Dimensions.get('window');
 
-import MovieList from './view/common/MovieList'
-import USBox from './view/common/USBox'
-import WmTab from './view/common/WmTab'
-
+import MovieList from './view/common/MovieList';
+import USBox from './view/common/USBox';
+import WmTab from './view/common/WmTab';
 
 class MovieTalk extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      tab: 'Home'
-    }
+      tab: 'Home',
+    };
   }
   onTabChange(tab) {
-    if (this.state.tab !== tab) this.setState({ tab })
+    if (this.state.tab !== tab) {
+      this.setState({ tab });
+    }
   }
   renderContent() {
-    switch (this.setState.tab) {
+    switch (this.state.tab) {
       case 'Home': {
         return <MovieList />;
       }
-      case 'US': {
+      case 'USB': {
         return <USBox />;
       }
     }
@@ -43,12 +39,14 @@ class MovieTalk extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <WmTab callbackParent={(val) => { this.onTabChange(val) }} />
-        <View style={styles.content}>
-          {this.renderContent()}
-        </View>
+        <WmTab
+          callbackParent={val => {
+            this.onTabChange(val);
+          }}
+        />
+        <View style={styles.content}>{this.renderContent()}</View>
       </View>
-    )
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -58,8 +56,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column-reverse',
   },
   content: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default MovieTalk;

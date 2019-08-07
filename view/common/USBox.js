@@ -43,7 +43,6 @@ class USBox extends React.Component {
   }
   // 电影组件
   renderMovieList({ item, index }) {
-    console.log(item)
     item = item.subject
     return (
       <TouchableHighlight underlayColor='rgba(34, 26, 38, 0.1)' onPress={() => { }}>
@@ -86,7 +85,7 @@ class USBox extends React.Component {
           source={{ uri: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3246509238,1077330305&fm=58&s=DFD513C6886286D432620FBC0300301F' }}>
           <View style={styles.overlay}>
             <Text style={styles.overlayText}>
-              哪吒之魔童转世
+              �?吒之魔�?�转�?
           </Text>
           </View>
         </ImageBackground> */}
