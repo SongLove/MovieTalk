@@ -17,6 +17,7 @@ import {SafeAreaView, createAppContainer, createStackNavigator, StackActions, Na
 import MovieList from './view/common/MovieList';
 import USBox from './view/common/USBox';
 import WmTab from './view/common/WmTab';
+import Details from './view/common/Details';
 //定义导航栏
 // export const SimpleApp = StackNavigator({
 //   MovieList: { screen: MovieList },
@@ -47,8 +48,11 @@ class MovieTalk extends React.Component {
     console.log(this.state.tab)
     switch (this.state.tab) {
       case 'Home': {
-        return <MovieList callbackParent={() => {
-          this.props.navigation.navigate('USBox')
+        return <MovieList callbackParent={(id) => {
+          console.log(id)
+          this.props.navigation.navigate('Details', {
+            detailId: id
+          })
         }} />;
       }
       case 'USB': {
@@ -74,8 +78,11 @@ const AppNavigator = createStackNavigator({
     screen: MovieTalk,
   },
   USBox: {
-    screen: USBox,
+    screen: USBox
   },
+  Details: {
+    screen: Details
+  }
 }, {
     initialRouteName: 'MovieTalk',
     defaultNavigationOptions: {

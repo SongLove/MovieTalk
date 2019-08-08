@@ -23,12 +23,13 @@ let REQUEST_URL = 'https://douban-api.now.sh/v2/movie/in_theaters';
 class MovieModel extends React.Component {
   render() {
     let { item, index } = this.props
+    console.log(item)
     return (
       <TouchableHighlight
         underlayColor="rgba(34, 26, 38, 0.1)"
         onPress={() => {
           console.log(this.props)
-          this.props.onPressItem()
+          this.props.onPressItem(item.id)
         }}
       >
         <View key={index} style={styles.movieContent}>
@@ -71,16 +72,16 @@ class MovieList extends React.Component {
         });
       });
   }
-  _onPressItem = () => {
-    this.props.callbackParent()
+  _onPressItem = (id) => {
+    this.props.callbackParent(id)
   }
   // 电影组件
   renderMovieList = ({ item, index }) => (
     <MovieModel
       item={item}
       index={index}
-      onPressItem={() => {
-        this._onPressItem()
+      onPressItem={(id) => {
+        this._onPressItem(id)
       }}
     />
   )
