@@ -19,6 +19,7 @@ class WmTab extends React.Component {
     if (this.state.tab !== tab) {
       this.setState({ tab: tab });
       // 给调用的组件回调一个方法
+
       this.props.callbackParent(tab);
     }
   }
@@ -77,8 +78,8 @@ class WmTab extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
-    borderWidth:1,
+    height: 50,
+    borderWidth: 1,
     borderTopColor: '#ddd'
   },
   tab: {

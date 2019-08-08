@@ -16,38 +16,20 @@ import {
   ActivityIndicator,
   TouchableHighlight,
 } from 'react-native';
+//import { createAppContainer, createStackNavigator, StackActions, NavigationActions } from 'react-navigation';
 
 let REQUEST_URL = 'https://douban-api.now.sh/v2/movie/in_theaters';
-class MovieList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      movies: [],
-      loaded: false,
-    };
-    this.fetchData();
-  }
-  fetchData() {
-    fetch(REQUEST_URL)
-      .then(response => response.json())
-      .then(responseData => {
-        this.setState({
-          movies: responseData.subjects,
-          loaded: true,
-        });
-      });
-  }
-  // item点击
-  TouchOnPress(e) {
-    console.log(e);
-  }
-  // 电影组件
-  renderMovieList({ item, index }) {
-    console.log(item);
+
+class MovieModel extends React.Component {
+  render() {
+    let { item, index } = this.props
     return (
       <TouchableHighlight
         underlayColor="rgba(34, 26, 38, 0.1)"
-        onPress={() => {}}
+        onPress={() => {
+          console.log(this.props)
+          this.props.onPressItem()
+        }}
       >
         <View key={index} style={styles.movieContent}>
           <Image
@@ -68,6 +50,40 @@ class MovieList extends React.Component {
       </TouchableHighlight>
     );
   }
+}
+
+class MovieList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      movies: [],
+      loaded: false,
+    };
+    this.fetchData();
+  }
+  fetchData() {
+    fetch(REQUEST_URL)
+      .then(response => response.json())
+      .then(responseData => {
+        this.setState({
+          movies: responseData.subjects,
+          loaded: true,
+        });
+      });
+  }
+  _onPressItem = () => {
+    this.props.callbackParent()
+  }
+  // 电影组件
+  renderMovieList = ({ item, index }) => (
+    <MovieModel
+      item={item}
+      index={index}
+      onPressItem={() => {
+        this._onPressItem()
+      }}
+    />
+  )
   render() {
     if (!this.state.loaded) {
       return (
@@ -79,40 +95,7 @@ class MovieList extends React.Component {
       );
     }
     return (
-      // <View style={styles.container}>
-      //   <View style={[styles.item, styles.itemOne]}>
-      //     <HeaderText>1</HeaderText>
-      //   </View>
-      //   <View style={[styles.item, styles.itemTwo]}>
-      //     <Image style={styles.image} source={{ uri: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3246509238,1077330305&fm=58&s=DFD513C6886286D432620FBC0300301F' }} />
-      //   </View>
-      //   <View style={[styles.item, styles.itemThree]}>
-      //     <Text style={[styles.itemTitle]}>3</Text>
-      //   </View>
-      // </View>
       <View style={styles.container}>
-        {/* <ImageBackground style={styles.backgroundImage}
-          source={{ uri: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3246509238,1077330305&fm=58&s=DFD513C6886286D432620FBC0300301F' }}>
-          <View style={styles.overlay}>
-            <Text style={styles.overlayText}>
-              哪吒之魔童转世
-          </Text>
-          </View>
-        </ImageBackground> */}
-        {/* <SectionList
-            renderItem={({ item, index, section }) => <Text key={index}></Text>}
-            renderSectionHeader={({ section: { title, data } }) => (
-              <View>
-                <Text style={styles.title}>{title}</Text>
-              </View>
-            )}
-            sections={[
-              { title: "Title1", data: ["item1", "item2"] },
-              { title: "Title2", data: ["item3", "item4"] },
-              { title: "Title3", data: ["item5", "item6"] }
-            ]}
-            keyExtractor={(item, index) => item + index}
-          /> */}
         <FlatList
           extraData={this.state}
           data={this.state.movies}
@@ -122,7 +105,6 @@ class MovieList extends React.Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   movieTitle: {
     fontWeight: '300',
@@ -209,3 +191,5 @@ const styles = StyleSheet.create({
 });
 
 export default MovieList;
+
+

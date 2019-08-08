@@ -19,6 +19,10 @@ import {
 
 let REQUEST_URL = 'https://douban-api.now.sh/v2/movie/us_box'
 class USBox extends React.Component {
+  static navigationOptions = {
+    title: '电影详情',
+    headerTintColor: '#000'
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -45,7 +49,8 @@ class USBox extends React.Component {
   renderMovieList({ item, index }) {
     item = item.subject
     return (
-      <TouchableHighlight underlayColor='rgba(34, 26, 38, 0.1)' onPress={() => { }}>
+      <TouchableHighlight underlayColor='rgba(34, 26, 38, 0.1)' onPress={() => {
+      }}>
         <View key={index} style={styles.movieContent}>
           <Image style={styles.movieCover} source={{ uri: item.images.large }} />
           <View style={styles.movieMsg}>
@@ -69,40 +74,7 @@ class USBox extends React.Component {
       )
     }
     return (
-      // <View style={styles.container}>
-      //   <View style={[styles.item, styles.itemOne]}>
-      //     <HeaderText>1</HeaderText>
-      //   </View>
-      //   <View style={[styles.item, styles.itemTwo]}>
-      //     <Image style={styles.image} source={{ uri: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3246509238,1077330305&fm=58&s=DFD513C6886286D432620FBC0300301F' }} />
-      //   </View>
-      //   <View style={[styles.item, styles.itemThree]}>
-      //     <Text style={[styles.itemTitle]}>3</Text>
-      //   </View>
-      // </View>
       <View style={styles.container}>
-        {/* <ImageBackground style={styles.backgroundImage}
-          source={{ uri: 'https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3246509238,1077330305&fm=58&s=DFD513C6886286D432620FBC0300301F' }}>
-          <View style={styles.overlay}>
-            <Text style={styles.overlayText}>
-              �?吒之魔�?�转�?
-          </Text>
-          </View>
-        </ImageBackground> */}
-        {/* <SectionList
-            renderItem={({ item, index, section }) => <Text key={index}></Text>}
-            renderSectionHeader={({ section: { title, data } }) => (
-              <View>
-                <Text style={styles.title}>{title}</Text>
-              </View>
-            )}
-            sections={[
-              { title: "Title1", data: ["item1", "item2"] },
-              { title: "Title2", data: ["item3", "item4"] },
-              { title: "Title3", data: ["item5", "item6"] }
-            ]}
-            keyExtractor={(item, index) => item + index}
-          /> */}
         <FlatList
           extraData={this.state}
           data={this.state.movies}
@@ -200,3 +172,4 @@ const styles = StyleSheet.create({
 
 
 export default USBox;
+
