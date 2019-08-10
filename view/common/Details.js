@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 
 const REQUSET_URL = 'https://douban-api.now.sh/v2/movie/subject/'
+import { Rating, RatingList } from './Rating'
 
 class Details extends React.Component {
   static navigationOptions = {
@@ -67,16 +68,26 @@ class Details extends React.Component {
    * @param comments 评论人数
    */
   rating = (average, comments) => {
-
     return (
       <View>
         <View style={styleCom.fr}>
           <Text style={styles.average}>{average}</Text>
-          <View style={[styles.rating]}>
-          </View>
+          <Rating rating={average ? average / 2 : 5} />
         </View>
         <Text><Text>淘票票评分 </Text> {this.WannaSee(comments, true)}</Text>
       </View>
+    )
+  }
+  ratingList = (details) => {
+    // details 为五条数据  还需要一个总数和
+    let sum = 0
+    let arr = []
+    for (let i in details) {
+      sum += details[i]
+      arr.push(details[i])
+    }
+    return (
+      <RatingList details={arr} sum={sum} />
     )
   }
   render() {
@@ -118,7 +129,9 @@ class Details extends React.Component {
             <View style={styles.gradeNum}>
               {this.rating(detail.rating.average, detail.comments_count)}
             </View>
-            <View style={styles.gradeBox}></View>
+            <View style={[styles.gradeBox, styleCom.afc,styleCom.js]}>
+              {this.ratingList(detail.rating.details)}
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -127,15 +140,12 @@ class Details extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  rating: {
-  },
   average: {
     width: 50,
     fontSize: 30
   },
   gradeBox: {
     width: 200,
-    backgroundColor: '#f0f'
   },
   gradeNum: {
     width: 165,

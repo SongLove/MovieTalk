@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
   jb: {
     justifyContent: 'space-between'
   },
+  js: {
+    justifyContent: 'flex-start'
+  },
   fr: {
     flexDirection: 'row'
   },
@@ -31,6 +34,9 @@ const styles = StyleSheet.create({
   },
   afs: {
     alignSelf: 'flex-start'
+  },
+  afc: {
+    alignSelf: 'center'
   },
   afe: {
     alignSelf: 'flex-end'
