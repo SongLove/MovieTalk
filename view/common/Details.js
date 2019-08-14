@@ -10,10 +10,17 @@ import {
   Image,
   ActivityIndicator,
   ScrollView,
+  SectionList,
+  Dimensions,
   TouchableHighlight,
+  DeviceEventEmitter
 } from 'react-native';
 
+const { width } = Dimensions.get('window');
+import Video from '../common/VideoBox'
+
 const REQUSET_URL = 'https://douban-api.now.sh/v2/movie/subject/'
+let textWidth
 import { Rating, RatingList } from './Rating'
 
 class Details extends React.Component {
@@ -33,7 +40,17 @@ class Details extends React.Component {
     this.state = {
       detailsId: this.props.navigation.getParam('id'),
       detail: {},
-      loaded: false
+      loaded: false,
+      section: [
+        { title: "简介", data: ["item1", "item2"] },
+        { title: "评论", data: ["item3", "item4"] },
+        { title: "讨论", data: ["item5", "item6"] },
+        { title: "更多", data: ["item5k", "item6r"] },
+        { title: "不知道1", data: ["item51", "item6e"] },
+        { title: "更多s", data: ["item52", "item6g"] },
+        { title: "更多f", data: ["item55", "item6f"] },
+        { title: "更多sf", data: ["item45", "item65"] }
+      ]
     }
   }
   fetchData = () => {
@@ -90,7 +107,14 @@ class Details extends React.Component {
       <RatingList details={arr} sum={sum} />
     )
   }
+  onBuffer = () => {
+
+  }
+  videoError = (err) => {
+    console.log(err, '报错信息')
+  }
   render() {
+    textWidth = width / this.state.section.length
     if (!this.state.loaded) {
       return (
         <View style={styles.container}>
@@ -105,7 +129,9 @@ class Details extends React.Component {
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {/** 预告视频 */}
-        <View style={styles.prevue}></View>
+        <View style={styles.prevue}>
+          <Video videoUri={detail.trailer_urls[0]} />
+        </View>
         {/** 头部标题 */}
         <View style={styles.content}>
           <View style={styles.movieIntro}>
@@ -129,17 +155,95 @@ class Details extends React.Component {
             <View style={styles.gradeNum}>
               {this.rating(detail.rating.average, detail.comments_count)}
             </View>
-            <View style={[styles.gradeBox, styleCom.afc,styleCom.js]}>
+            <View style={[styles.gradeBox, styleCom.afc, styleCom.js]}>
               {this.ratingList(detail.rating.details)}
             </View>
           </View>
+          {/** 详情列表 */}
+          {/* <View style={[styles.discuss, styleCom.fr]}>
+            <Text style={styles.discussText}>简介</Text>
+            <Text style={styles.discussText}>评论</Text>
+            <Text style={styles.discussText}>讨论</Text>
+            <Text style={styles.discussText}>更多</Text>
+          </View> */}
+
+          <FlatList
+            ref={(ref) => {
+              this._flatListRef = ref
+            }}
+            extraData={this.state}
+            data={this.state.section}
+            horizontal={true}
+            renderItem={({ item, index }) => {
+              console.log(item, index, 'asfsa')
+              return <Text onPress={this.TextItemClick}
+                key={index}
+                style={styles.discussText}>{item.title}</Text>
+            }}
+            keyExtractor={(item, index) => item + index}
+          /> 
+
+          {/** 列表内容 */}
+
+          <SectionList
+            ref={(ref) => { this._listRef = ref }}
+            renderItem={({ item, index, section }) => <Text key={index}>{item}</Text>}
+            renderSectionHeader={({ section: { title } }) => (
+              <Text style={{ fontWeight: "bold" }}>{title}</Text>
+            )}
+            sections={this.state.section}
+            onViewableItemsChanged={(info) => this.itemChange(info)}
+            keyExtractor={(item,index) => item+index}
+          />
         </View>
-      </ScrollView>
+      </ScrollView >
     )
+  }
+  itemChange = (info) => {
+    // 取出第一个数据的title
+    let title = info.viewableItems[0].item.title
+    console.log(title, '滑动时调用的', info.viewableItems[0])
+  }
+  TextItemClick = ({ index }) => {
+    this._listRef.scrollToLocation(
+      {
+        itemIndex: 0,
+        sectionIndex: index,
+        viewOffset: 30
+      }
+    );
+  }
+  componentWillMount = () => {
+    console.log('componentWillMount')
+    // 使用一个实例接收发送事件
+    this.listener = DeviceEventEmitter.addListener('list', (e) => {
+      //this._flatListRef
+      console.log('监听list', e)
+    })
+  }
+  componentWillUnmount = () => {
+    // 移除监听
+    this.listener.remove()
   }
 }
 
 const styles = StyleSheet.create({
+  discussText: {
+    height: 30,
+    width: 40,
+    textAlign: 'center',
+    alignSelf: 'center'
+  },
+  discuss: {
+    flex: 1,
+    height: 30,
+    backgroundColor: '#000'
+  },
+  sectionList: {
+    flex: 1,
+    height: 150,
+    backgroundColor: '#fff'
+  },
   average: {
     width: 50,
     fontSize: 30
@@ -174,7 +278,6 @@ const styles = StyleSheet.create({
   movieMsg: {
     width: 240,
     padding: 5,
-    backgroundColor: '#0ff'
   },
   movieCover: {
     flex: 1,
@@ -188,7 +291,6 @@ const styles = StyleSheet.create({
   },
   movieIntro: {
     height: 190,
-    backgroundColor: '#f0f',
     marginTop: -80,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -201,8 +303,8 @@ const styles = StyleSheet.create({
     height: 500
   },
   prevue: {
-    height: 200,
-    backgroundColor: '#000'
+    position: 'relative',
+    height: 200
   },
   container: {
     backgroundColor: '#eae7ff',
