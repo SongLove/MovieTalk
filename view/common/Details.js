@@ -127,7 +127,7 @@ class Details extends React.Component {
     let detail = this.state.detail
     console.log(detail.images.large)
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={true} style={styles.container}>
         {/** 预告视频 */}
         <View style={styles.prevue}>
           <Video videoUri={detail.trailer_urls[0]} />
@@ -175,13 +175,20 @@ class Details extends React.Component {
             data={this.state.section}
             horizontal={true}
             renderItem={({ item, index }) => {
-              console.log(item, index, 'asfsa')
-              return <Text onPress={this.TextItemClick}
+              return <Text onPress={() => {
+                this._listRef.scrollToLocation(
+                  {
+                    itemIndex: 0,
+                    sectionIndex: index,
+                    viewOffset: 30
+                  }
+                );
+              }}
                 key={index}
                 style={styles.discussText}>{item.title}</Text>
             }}
             keyExtractor={(item, index) => item + index}
-          /> 
+          />
 
           {/** 列表内容 */}
 
@@ -193,25 +200,16 @@ class Details extends React.Component {
             )}
             sections={this.state.section}
             onViewableItemsChanged={(info) => this.itemChange(info)}
-            keyExtractor={(item,index) => item+index}
+            keyExtractor={(item, index) => item + index}
           />
         </View>
-      </ScrollView >
+      </ScrollView>
     )
   }
   itemChange = (info) => {
     // 取出第一个数据的title
     let title = info.viewableItems[0].item.title
     console.log(title, '滑动时调用的', info.viewableItems[0])
-  }
-  TextItemClick = ({ index }) => {
-    this._listRef.scrollToLocation(
-      {
-        itemIndex: 0,
-        sectionIndex: index,
-        viewOffset: 30
-      }
-    );
   }
   componentWillMount = () => {
     console.log('componentWillMount')
