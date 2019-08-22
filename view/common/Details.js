@@ -127,7 +127,7 @@ class Details extends React.Component {
     let detail = this.state.detail
     console.log(detail.images.large)
     return (
-      <ScrollView showsVerticalScrollIndicator={true} style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={true} style={styles.sectContent}>
         {/** 预告视频 */}
         <View style={styles.prevue}>
           <Video videoUri={detail.trailer_urls[0]} />
@@ -191,8 +191,8 @@ class Details extends React.Component {
           />
 
           {/** 列表内容 */}
-
           <SectionList
+
             ref={(ref) => { this._listRef = ref }}
             renderItem={({ item, index, section }) => <Text key={index}>{item}</Text>}
             renderSectionHeader={({ section: { title } }) => (
@@ -226,6 +226,9 @@ class Details extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  sectContent: {
+    height: 500
+  },
   discussText: {
     height: 30,
     width: 40,

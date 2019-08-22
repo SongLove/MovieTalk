@@ -9,10 +9,11 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
-import {SafeAreaView, createAppContainer, createStackNavigator, StackActions, NavigationActions } from 'react-navigation';
+import { SafeAreaView, createAppContainer, createStackNavigator, StackActions, NavigationActions } from 'react-navigation';
 // import { Navigator } from 'react-native-deprecated-custom-components';
 //引用导航栏组件
 // import {StackNavigator} from 'react-navigation';
+import SplashScreen from 'react-native-splash-screen';
 
 import MovieList from './view/common/MovieList';
 import USBox from './view/common/USBox';
@@ -29,7 +30,7 @@ class MovieTalk extends React.Component {
     title: '热门电影',
     headerTintColor: '#000',
     headerTitleStyle: {
-      flex:1,
+      flex: 1,
       textAlign: 'center'
     }
   }
@@ -59,6 +60,12 @@ class MovieTalk extends React.Component {
         return <USBox />;
       }
     }
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      SplashScreen.hide(); // 隐藏启动屏
+    }, 3000)
   }
   render() {
     return (
@@ -103,7 +110,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column-reverse',
   },
   content: {
-    flex: 1,
+    flex: 1
   },
 });
 

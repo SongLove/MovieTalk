@@ -1,6 +1,8 @@
 package com.reactapp;
 
+import android.os.Bundle;  //add
 import com.facebook.react.ReactActivity;
+import org.devio.rn.splashscreen.SplashScreen; //add
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
@@ -24,4 +26,9 @@ public class MainActivity extends ReactActivity {
       }
     };
   }
+  @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        SplashScreen.show(this);   //add
+        super.onCreate(savedInstanceState);
+    }
 }

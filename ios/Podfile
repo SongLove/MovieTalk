@@ -30,6 +30,8 @@ target 'reactapp' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'reactappTests' do
     inherit! :search_paths
     # Pods for testing
